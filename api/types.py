@@ -35,3 +35,6 @@ class CurrencyCode(str, BaseState):
 
 def states_as_list(state_type: BaseState):
     return list(map(lambda c: (c.value, c.name), state_type))
+
+def states_as_values(state_type: BaseState):
+    return list(map(lambda c: c.value, state_type))

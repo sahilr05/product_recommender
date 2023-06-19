@@ -21,7 +21,7 @@ class Product(BaseModel):
     category = models.CharField(choices=states_as_list(ProductCategory),max_length=100)
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Specification(BaseModel):
@@ -32,8 +32,12 @@ class Specification(BaseModel):
 
 class Order(BaseModel):
     order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    code = models.CharField(max_length=100)
     address = models.TextField()
     payment_mode = models.CharField(choices=states_as_list(PaymentMode), max_length=100)
+
+    def __str__(self):
+        return self.code
 
 
 class OrderProduct(BaseModel):
@@ -43,3 +47,6 @@ class OrderProduct(BaseModel):
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     currency_code = models.CharField(choices=states_as_list(CurrencyCode), max_length=100)
+
+    def __str__(self) -> str:
+        return f"{self.order.code} {self.product.name}"
