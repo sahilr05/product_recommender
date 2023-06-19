@@ -1,6 +1,6 @@
 import uuid
 
-from .types import ProductCategory, states_as_list
+from .types import ProductCategory, states_as_list, CurrencyCode, PaymentMode
 from django.db import models
 
 
@@ -31,7 +31,15 @@ class Specification(BaseModel):
 
 
 class Order(BaseModel):
-    pass
+    order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    address = models.TextField()
+    payment_mode = models.CharField(choices=states_as_list(PaymentMode), max_length=100)
+
 
 class OrderProduct(BaseModel):
-    pass
+    entry_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    product = models.ForeignKey(Product, related_name='order_products', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='order_products', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    currency_code = models.CharField(choices=states_as_list(CurrencyCode), max_length=100)
