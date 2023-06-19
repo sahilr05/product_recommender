@@ -19,6 +19,8 @@ class Product(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     category = models.CharField(choices=states_as_list(ProductCategory),max_length=100)
+    similar_products = models.ManyToManyField('self')
+    frequently_bought_together = models.ManyToManyField('self')
 
     def __str__(self):
         return self.name
