@@ -30,7 +30,7 @@ def custom_exception_handler(exc, context):
     ):
         # trace = traceback.format_exc().splitlines()
         response_status = status.HTTP_400_BAD_REQUEST
-    
+
     return Response(
         data={"ErrorCode": str(exc), "Cause": trace},
         status=response_status,

@@ -1,5 +1,6 @@
 import enum
 
+
 class StateEnumMeta(enum.EnumMeta):
     def __contains__(self, item):
         try:
@@ -33,8 +34,10 @@ class CurrencyCode(str, BaseState):
     EUR = "EUR"
     GBP = "GBP"
 
+
 def states_as_list(state_type: BaseState):
     return list(map(lambda c: (c.value, c.name), state_type))
+
 
 def states_as_values(state_type: BaseState):
     return list(map(lambda c: c.value, state_type))

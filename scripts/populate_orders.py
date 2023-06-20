@@ -7,27 +7,28 @@ from django.db import transaction
 
 fake = Faker()
 
+
 def create_order():
     address = fake.address()
     payment_mode = get_random_payment_mode()
     code = fake.random_number(digits=6)
 
     order = Order.objects.create(
-        order_id=uuid.uuid4(),
-        address=address,
-        payment_mode=payment_mode,
-        code=code
+        order_id=uuid.uuid4(), address=address, payment_mode=payment_mode, code=code
     )
 
     return order
+
 
 def get_random_product():
     products = Product.objects.all()
     return fake.random_element(products)
 
+
 def get_random_payment_mode():
     payment_modes = states_as_values(PaymentMode)
     return fake.random_element(payment_modes)
+
 
 def create_order_product(order, product, quantity, price, currency_code):
     order_product = OrderProduct.objects.create(
@@ -36,10 +37,11 @@ def create_order_product(order, product, quantity, price, currency_code):
         order=order,
         quantity=quantity,
         price=price,
-        currency_code=currency_code
+        currency_code=currency_code,
     )
 
     return order_product
+
 
 @transaction.atomic
 def run():
@@ -56,4 +58,4 @@ def run():
 
             create_order_product(order, product, quantity, price, currency_code)
 
-    print('Order and OrderProduct data has been populated successfully.')
+    print("Order and OrderProduct data has been populated successfully.")
