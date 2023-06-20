@@ -34,10 +34,10 @@ Create an order with the given data.
 {
 "product_id": "<uuid>",
 "price": <decimal>,
-"currency_code": "<currency_code>",
+"currency_code": <ENUM> ("INR", "GBP", "USD", "EUR"),
 "quantity": <integer>,
-"address": "<address>",
-"payment_mode": "<payment_mode>"
+"address": "<str>",
+"payment_mode": <ENUM> ("CASH_ON_DELIVERY", "ONLINE")
 }
 ```
 
@@ -62,7 +62,7 @@ Add a product to an order with the given ID.
 {
 "product_id": "<uuid>",
 "price": <decimal>,
-"currency_code": "<currency_code>",
+"currency_code": <ENUM> ("INR", "GBP", "USD", "EUR")
 "quantity": <integer>
 }
 ```
