@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.9
 
 ENV PYTHONUNBUFFERED=1
 
@@ -6,9 +6,9 @@ WORKDIR /app
 COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY start-server.sh /app/start-server.sh
+RUN chmod +x /app/start-server.sh
 
 EXPOSE 8000
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/start-server.sh"]
