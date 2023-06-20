@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    env_file:
+      - ./product_recommendation_system/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - db_network
+
+
+  celery_worker:
+    build: .
+    command: bash -c 'celery -A product_recommendation_system worker -l info -Q recommender_queue'
+    environment:
+      - C_FORCE_ROOT=true
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    env_file:
+      - ./product_recommendation_system/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - db_network
+
+  celery_beat:
+    build: .
+    command: celery -A product_recommendation_system beat -l info
+    restart: unless-stopped
+    env_file:
+      - ./product_recommendation_system/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - db_network
+
+  db:
+    image: postgres:12.2
+    env_file:
+      - ./database.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: on-failure
+    networks:
+      - db_network
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    networks:
+      - db_network
+
+networks:
+  db_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
