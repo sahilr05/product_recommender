@@ -12,12 +12,13 @@ urlpatterns = [
         api_views.GetProductRecommendationsAPI.as_view(),
         name="recommendations",
     ),
-    path("orders/create/", api_views.CreateOrderAPI.as_view()),
+    path("orders/create/", api_views.CreateOrderAPI.as_view(), name="create_order"),
+    path("orders/<uuid:order_id>/", api_views.DetailOrderAPI.as_view(), name="detail_order"),
     path(
-        "orders/<uuid:order_id>/products/add/", api_views.AddProductToOrderAPI.as_view()
+        "orders/<uuid:order_id>/products/add/", api_views.AddProductToOrderAPI.as_view(), name="add_product_to_order"
     ),
     path(
         "orders/<uuid:order_id>/products/<uuid:product_id>/remove/",
-        api_views.RemoveProductFromOrderAPI.as_view(),
+        api_views.RemoveProductFromOrderAPI.as_view(), name="remove_product_from_order",
     ),
 ]

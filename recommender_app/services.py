@@ -42,14 +42,11 @@ def get_precomputed_similar_products(product_id: str) -> List[Product]:
 
 def get_precomputed_frequently_bought_together(product_id: str) -> List[Product]:
     """Return frequently bought together products for a product with the given ID."""
-    try:
-        product = Product.objects.get(product_id=product_id)
-        frequently_bought_together = product.frequently_bought_together.all()
 
-        return frequently_bought_together
-    except Product.DoesNotExist:
-        return []
+    product = Product.objects.get(product_id=product_id)
+    frequently_bought_together = product.frequently_bought_together.all()
 
+    return frequently_bought_together
 
 @transaction.atomic
 def create_order(
@@ -96,4 +93,7 @@ def add_product_to_order(
         currency_code=currency_code,
         quantity=quantity,
     )
+    return Order.objects.get(order_id=order_id)
+
+def get_order_details(order_id: str) -> Order:
     return Order.objects.get(order_id=order_id)
