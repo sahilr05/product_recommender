@@ -22,7 +22,7 @@ To install and run this application, follow these steps:
 ### Get Product Recommendations API
 Get recommendations for a product with the given ID.
 
-`GET /api/<uuid:product_id>/recommendations/`
+`GET /api/products/<uuid:product_id>/recommendations/`
 
 ### Create Order API
 Create an order with the given data.
@@ -40,6 +40,12 @@ Create an order with the given data.
 "payment_mode": "<payment_mode>"
 }
 ```
+
+### Detail Order API
+Fetch Order details
+
+`GET /api/orders/<uuid:order_id>/`
+
 
 ### Remove Product from Order API
 Remove a product with the given ID from an order with the given ID.
