@@ -1,9 +1,9 @@
 import uuid
+from datetime import datetime
+from typing import Optional
 
 from django.db import models
 
-from datetime import datetime
-from typing import Optional
 from .types import CurrencyCode
 from .types import PaymentMode
 from .types import ProductCategory

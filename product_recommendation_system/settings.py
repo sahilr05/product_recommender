@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 # Initialise environment variables
@@ -33,7 +34,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "gunicorn",
     "django_extensions",
-    "api",
+    "recommender_app",
 ]
 
 MIDDLEWARE = [
@@ -139,5 +140,7 @@ CELERY_ACCEPT_CONTENT = ["pickle"]
 CELERY_RESULT_SERIALIZER = "pickle"
 CELERY_TASK_SERIALIZER = "pickle"
 CELERY_ROUTES = {
-    "api.recommender.update_product_recommendations": {"queue": "recommender_queue"},
+    "recommender_app.recommender.update_product_recommendations": {
+        "queue": "recommender_queue"
+    },
 }

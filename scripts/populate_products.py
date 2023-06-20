@@ -1,6 +1,6 @@
 import uuid
 from django.core.management.base import BaseCommand
-from api.models import Product, Specification, ProductCategory
+from recommender_app.models import Product, Specification, ProductCategory
 from faker import Faker
 from django.db import transaction
 

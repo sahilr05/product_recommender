@@ -65,7 +65,7 @@ def find_frequently_bought_together(product: Product) -> List[Product]:
 # Schedule the update_product_recommendations task to run every hour
 app.conf.beat_schedule = {
     "update-product-recommendations": {
-        "task": "api.recommender.update_product_recommendations",
+        "task": "recommender_app.recommender.update_product_recommendations",
         "schedule": crontab(minute="0", hour="*"),
     }
 }

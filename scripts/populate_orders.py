@@ -1,7 +1,7 @@
 import uuid
 from decimal import Decimal
-from api.types import states_as_values, ProductCategory, PaymentMode, CurrencyCode
-from api.models import Order, OrderProduct, Product
+from recommender_app.types import states_as_values, ProductCategory, PaymentMode, CurrencyCode
+from recommender_app.models import Order, OrderProduct, Product
 from faker import Faker
 from django.db import transaction
 

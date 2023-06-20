@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-import api.views as api_views
+import recommender_app.views as api_views
 
 app_name = "api"
 

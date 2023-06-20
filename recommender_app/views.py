@@ -4,12 +4,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api import recommender
-from api import services
-from api.models import Product
-from api.types import CurrencyCode
-from api.types import PaymentMode
-from api.types import states_as_list
+from recommender_app import recommender
+from recommender_app import services
+from recommender_app.models import Product
+from recommender_app.types import CurrencyCode
+from recommender_app.types import PaymentMode
+from recommender_app.types import states_as_list
 
 # Create your views here.
 
