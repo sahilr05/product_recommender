@@ -25,12 +25,12 @@ class OrderOutputSerializer(serializers.ModelSerializer):
             model = Order
             fields = "__all__"
 
-class RecommenderAPI(APIView):
-    def get(self, request):
-        """Check celery task and update product recommendations."""
-        print("check celery task")
-        recommender.update_product_recommendations.apply_async()
-        return Response(status=status.HTTP_200_OK)
+# class RecommenderAPI(APIView):
+#     def get(self, request):
+#         """Check celery task and update product recommendations."""
+#         print("check celery task")
+#         recommender.update_product_recommendations.apply_async()
+#         return Response(status=status.HTTP_200_OK)
 
 
 class GetProductRecommendationsAPI(APIView):
