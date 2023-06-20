@@ -11,4 +11,12 @@ urlpatterns = [
         "<uuid:product_id>/recommendations/",
         api_views.GetProductRecommendationsAPI.as_view(),
     ),
+    path("orders/create/", api_views.CreateOrderAPI.as_view()),
+    path(
+        "orders/<uuid:order_id>/products/add/", api_views.AddProductToOrderAPI.as_view()
+    ),
+    path(
+        "orders/<uuid:order_id>/products/<uuid:product_id>/remove/",
+        api_views.RemoveProductFromOrderAPI.as_view(),
+    ),
 ]

@@ -39,7 +39,7 @@ class GetProductRecommendationsAPI(APIView):
 
 class CreateOrderAPI(APIView):
     class InputSerializer(serializers.Serializer):
-        product_id = child = serializers.UUIDField()
+        product_id = serializers.UUIDField()
         price = serializers.DecimalField(max_digits=10, decimal_places=2)
         currency_code = serializers.ChoiceField(choices=states_as_list(CurrencyCode))
         quantity = serializers.IntegerField()
@@ -63,7 +63,7 @@ class RemoveProductFromOrderAPI(APIView):
 
 class AddProductToOrderAPI(APIView):
     class InputSerializer(serializers.Serializer):
-        product_id = child = serializers.UUIDField()
+        product_id = serializers.UUIDField()
         price = serializers.DecimalField(max_digits=10, decimal_places=2)
         currency_code = serializers.ChoiceField(choices=states_as_list(CurrencyCode))
         quantity = serializers.IntegerField()
