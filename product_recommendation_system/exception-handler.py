@@ -1,5 +1,6 @@
 import sys
 import traceback
+from typing import Any
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.exceptions import PermissionDenied
@@ -11,10 +12,12 @@ from .exception import BadRequestException
 from .exception import ValidationException
 
 
-def custom_exception_handler(exc, context):
-    # exception_handler(exc, context)
-    # exception_class = exc.__class__.__name__  ,if class name required
+def custom_exception_handler(exc: Exception, context: Any) -> Response:
+    """
+    Custom exception handler for Django Rest Framework.
 
+    Returns a JSON response with the appropriate HTTP status code and error message.
+    """
     exc_type, exc_value, exc_traceback = sys.exc_info()
     trace = traceback.format_tb(exc_traceback)
 
@@ -28,7 +31,6 @@ def custom_exception_handler(exc, context):
         or isinstance(exc, ValidationException)
         or isinstance(exc, ValidationError)
     ):
-        # trace = traceback.format_exc().splitlines()
         response_status = status.HTTP_400_BAD_REQUEST
 
     return Response(

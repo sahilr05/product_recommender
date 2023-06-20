@@ -7,7 +7,10 @@ from django.db import transaction
 fake = Faker()
 
 
-def create_product(code, name, description, category):
+def create_product(
+    code: str, name: str, description: str, category: str
+) -> Product:
+    """Create a Product instance with the given data and specifications."""
     product = Product.objects.create(
         product_id=uuid.uuid4(),
         code=code,
@@ -16,6 +19,7 @@ def create_product(code, name, description, category):
         category=category,
     )
 
+    # Create specifications for the product
     create_specification(product, "Color", fake.color_name())
     create_specification(product, "Brand", fake.company())
     create_specification(product, "Price", fake.random_int(min=100, max=1000))
@@ -24,12 +28,15 @@ def create_product(code, name, description, category):
     return product
 
 
-def create_specification(product, name, value):
-    Specification.objects.create(name=name, value=value, product=product)
+def create_specification(product: Product, name: str, value: str) -> Specification:
+    """Create a Specification instance with the given data and associate it with a product."""
+    specification = Specification.objects.create(name=name, value=value, product=product)
+    return specification
 
 
 @transaction.atomic
 def run():
+    """Populate the Product and Specification models with sample data."""
     # Create product categories
     electronics_category = ProductCategory.ELECTRONICS
     cases_covers_category = ProductCategory.CASES_AND_COVERS
