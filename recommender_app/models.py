@@ -74,6 +74,10 @@ class Order(BaseModel):
         """Return the code of the order as a string."""
         return self.code
 
+    @property
+    def order_products(self):
+        return OrderProduct.objects.filter(order_id=self.order_id)
+
 
 class OrderProduct(BaseModel):
     entry_id: uuid.UUID = models.UUIDField(

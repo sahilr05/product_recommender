@@ -6,12 +6,17 @@ from rest_framework.views import APIView
 
 from recommender_app import recommender
 from recommender_app import services
-from recommender_app.models import Product
+from recommender_app.models import Order
+from recommender_app.models import OrderProduct
 from recommender_app.types import CurrencyCode
 from recommender_app.types import PaymentMode
 from recommender_app.types import states_as_list
 
-# Create your views here.
+
+class OrderProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderProduct
+        fields = "__all__"
 
 
 class RecommenderAPI(APIView):
@@ -23,18 +28,18 @@ class RecommenderAPI(APIView):
 
 
 class GetProductRecommendationsAPI(APIView):
-    class OutputSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Product
-            fields = "__all__"
+    # class OutputSerializer(serializers.ModelSerializer):
+    #     class Meta:
+    #         model = Product
+    #         fields = "__all__"
 
     def get(self, request, product_id: str) -> Response:
         """Get recommendations for a product with the given ID."""
         recommendations = services.recommend_products(product_id)
-        serialized_recommendations = self.OutputSerializer(
-            recommendations, many=True
-        ).data
-        return Response(data=serialized_recommendations, status=status.HTTP_200_OK)
+        # serialized_recommendations = self.OutputSerializer(
+        #     recommendations, many=True
+        # ).data
+        return Response(data=recommendations, status=status.HTTP_200_OK)
 
 
 class CreateOrderAPI(APIView):
@@ -46,18 +51,27 @@ class CreateOrderAPI(APIView):
         address = serializers.CharField()
         payment_mode = serializers.ChoiceField(choices=states_as_list(PaymentMode))
 
+    class OutputSerializer(serializers.ModelSerializer):
+        order_products = OrderProductSerializer(many=True)
+
+        class Meta:
+            model = Order
+            fields = "__all__"
+
     def post(self, request) -> Response:
         """Create an order with the given data."""
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         order_data = services.create_order(**serializer.validated_data)
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(
+            data=self.OutputSerializer(order_data).data, status=status.HTTP_201_CREATED
+        )
 
 
 class RemoveProductFromOrderAPI(APIView):
-    def post(self, request, order_id: str, product_id: str) -> Response:
+    def delete(self, request, order_id: str, product_id: str) -> Response:
         """Remove a product with the given ID from an order with the given ID."""
-        services.remove_product_from_order(order_id, product_id)
+        services.remove_product_from_order(order_id=order_id, product_id=product_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -68,9 +82,20 @@ class AddProductToOrderAPI(APIView):
         currency_code = serializers.ChoiceField(choices=states_as_list(CurrencyCode))
         quantity = serializers.IntegerField()
 
+    class OutputSerializer(serializers.ModelSerializer):
+        order_products = OrderProductSerializer(many=True)
+
+        class Meta:
+            model = Order
+            fields = "__all__"
+
     def post(self, request, order_id: str) -> Response:
         """Add a product to an order with the given ID."""
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        services.add_product_to_order(order_id, **serializer.validated_data)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        order = services.add_product_to_order(
+            order_id=order_id, **serializer.validated_data
+        )
+        return Response(
+            data=self.OutputSerializer(order).data, status=status.HTTP_201_CREATED
+        )

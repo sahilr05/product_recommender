@@ -3,13 +3,14 @@ from django.urls import path
 
 import recommender_app.views as api_views
 
-app_name = "api"
+app_name = "recommender_app"
 
 urlpatterns = [
-    path("recommender/", api_views.RecommenderAPI.as_view()),
+    # path("recommender/", api_views.RecommenderAPI.as_view()),
     path(
-        "<uuid:product_id>/recommendations/",
+        "products/<uuid:product_id>/recommendations/",
         api_views.GetProductRecommendationsAPI.as_view(),
+        name="recommendations",
     ),
     path("orders/create/", api_views.CreateOrderAPI.as_view()),
     path(

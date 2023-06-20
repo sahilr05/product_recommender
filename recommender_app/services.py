@@ -17,15 +17,15 @@ def recommend_products(product_id: str) -> Dict[str, List[Union[str, int]]]:
 
         # Retrieve pre-calculated similar products
         similar_products = get_precomputed_similar_products(product_id)
-        recommendations["similar_products"] = [p.name for p in similar_products]
+        recommendations["similar_products"] = similar_products.values()
 
         # Retrieve pre-calculated frequently bought together products
         frequently_bought_together = get_precomputed_frequently_bought_together(
             product_id
         )
-        recommendations["frequently_bought_together"] = [
-            p.name for p in frequently_bought_together
-        ]
+        recommendations[
+            "frequently_bought_together"
+        ] = frequently_bought_together.values()
 
         return recommendations
     except Product.DoesNotExist:
@@ -68,13 +68,14 @@ def create_order(
         address=address,
         payment_mode=payment_mode,
     )
-    return OrderProduct.objects.create(
+    OrderProduct.objects.create(
         product=product,
         order=order,
         price=price,
         currency_code=currency_code,
         quantity=quantity,
     )
+    return order
 
 
 @transaction.atomic
@@ -95,3 +96,4 @@ def add_product_to_order(
         currency_code=currency_code,
         quantity=quantity,
     )
+    return Order.objects.get(order_id=order_id)
