@@ -17,7 +17,14 @@ To install and run this application, follow these steps:
 - Docker
 - Docker Compose
 
-## API Documentation
+# API Documentation
+
+## Note
+#### Recommendations are precomputed every hour using Celery Beat scheduler. However, you can use this endpoint to trigger the population process manually if needed.
+
+### Manually precompute recommendations
+
+`POST /api/precompute-recommendations/`
 
 ### Get Product Recommendations API
 Get recommendations for a product with the given ID.

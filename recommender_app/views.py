@@ -18,19 +18,21 @@ class OrderProductOutputSerializer(serializers.ModelSerializer):
         model = OrderProduct
         fields = "__all__"
 
+
 class OrderOutputSerializer(serializers.ModelSerializer):
-        order_products = OrderProductOutputSerializer(many=True)
+    order_products = OrderProductOutputSerializer(many=True)
 
-        class Meta:
-            model = Order
-            fields = "__all__"
+    class Meta:
+        model = Order
+        fields = "__all__"
 
-# class RecommenderAPI(APIView):
-#     def get(self, request):
-#         """Check celery task and update product recommendations."""
-#         print("check celery task")
-#         recommender.update_product_recommendations.apply_async()
-#         return Response(status=status.HTTP_200_OK)
+
+class RecommenderAPI(APIView):
+    def post(self, request):
+        """Check celery task and update product recommendations."""
+        print("populating similar products")
+        recommender.update_product_recommendations()
+        return Response(status=status.HTTP_200_OK)
 
 
 class GetProductRecommendationsAPI(APIView):
@@ -57,8 +59,6 @@ class CreateOrderAPI(APIView):
         address = serializers.CharField()
         payment_mode = serializers.ChoiceField(choices=states_as_list(PaymentMode))
 
-    
-
     def post(self, request) -> Response:
         """Create an order with the given data."""
         serializer = self.InputSerializer(data=request.data)
@@ -83,7 +83,6 @@ class AddProductToOrderAPI(APIView):
         currency_code = serializers.ChoiceField(choices=states_as_list(CurrencyCode))
         quantity = serializers.IntegerField()
 
-
     def post(self, request, order_id: str) -> Response:
         """Add a product to an order with the given ID."""
         serializer = self.InputSerializer(data=request.data)
@@ -94,6 +93,7 @@ class AddProductToOrderAPI(APIView):
         return Response(
             data=OrderOutputSerializer(order).data, status=status.HTTP_201_CREATED
         )
+
 
 class DetailOrderAPI(APIView):
     def get(self, request, order_id: str) -> Response:
