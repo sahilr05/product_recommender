@@ -19,13 +19,10 @@ def recommend_products(product_id):
         return {}
 
 def get_precomputed_similar_products(product_id):
-    try:
-        product = Product.objects.get(product_id=product_id)
-        similar_products = product.similar_products.all()
+    product = Product.objects.get(product_id=product_id)
+    similar_products = product.similar_products.all()
 
-        return similar_products
-    except Product.DoesNotExist:
-        return []
+    return similar_products
 
 def get_precomputed_frequently_bought_together(product_id):
     try:

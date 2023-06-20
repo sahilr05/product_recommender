@@ -123,3 +123,18 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Celery
+BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_REDIS_PORT = 6379
+CELERY_REDIS_DB = 0
+
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_ACCEPT_CONTENT = ["pickle"]
+CELERY_RESULT_SERIALIZER = "pickle"
+CELERY_TASK_SERIALIZER = "pickle"
+CELERY_ROUTES = {
+    "api.recommender.update_product_recommendations": {"queue": "recommender_queue"},
+}
